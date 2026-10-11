@@ -1,0 +1,146 @@
+[1/53] Running notebook cell 2: !pip install geemap -q
+[2/53] Running notebook cell 4: import ee
+Google Earth Engine initialized successfully.
+[3/53] Running notebook cell 6: # Load GAUL Level 2 administrative boundaries
+Number of selected LGA features: 4
+[4/53] Running notebook cell 8: kaduna_lgas = gaul_l2.filter(
+['Ikara', 'Makarfi', 'Kudan', 'Kubau', 'Chikun', 'Kajuru', 'Kachia', "Jema'a", 'Sanga', 'Kagarko', 'Giwa', 'Birnin Gwari', 'Sabon Gari', 'Soba', 'Zaria', 'Igabi', 'Kauru', 'Lere', 'Kaduna North', 'Kaduna South', 'Zangon Kataf', 'Kaura', 'Jaba']
+[5/53] Running notebook cell 10: def mask_landsat_sr(image):
+[6/53] Running notebook cell 12: def get_landsat_collection(year, aoi, start_month=1, end_month=12):
+[7/53] Running notebook cell 14: def add_indices(image):
+[8/53] Running notebook cell 15: print("Selected Kaduna Metro features:", kaduna_metro.size().getInfo())
+Selected Kaduna Metro features: 4
+Selected LGA names: ['Chikun', 'Igabi', 'Kaduna North', 'Kaduna South']
+[9/53] Running notebook cell 17: years = [2000, 2005, 2010, 2015, 2020, 2025]
+2000: using dry-season collection with 8 images
+Composite prepared for 2000; image count: 8
+2005: using dry-season collection with 30 images
+Composite prepared for 2005; image count: 30
+2010: using dry-season collection with 25 images
+Composite prepared for 2010; image count: 25
+2015: using dry-season collection with 39 images
+Composite prepared for 2015; image count: 39
+2020: using dry-season collection with 38 images
+Composite prepared for 2020; image count: 38
+2025: using dry-season collection with 78 images
+Composite prepared for 2025; image count: 78
+[10/53] Running notebook cell 19: Map = geemap.Map(center=[10.52, 7.44], zoom=10)
+[11/53] Running notebook cell 21: # Load ESA WorldCover 2020
+[12/53] Running notebook cell 23: feature_bands = ["blue", "green", "red", "nir", "swir1", "swir2", "NDVI", "NDBI", "MNDWI", "BSI"]
+Number of samples: 3300
+[13/53] Running notebook cell 25: samples = samples.randomColumn("random", seed=42)
+Training samples: 2311
+Validation samples: 989
+[14/53] Running notebook cell 27: rf_classifier = ee.Classifier.smileRandomForest(
+Random Forest model trained successfully.
+[15/53] Running notebook cell 29: validated = validation_samples.classify(rf_classifier)
+Confusion Matrix:
+[[0, 0, 0, 0, 0, 0], [0, 202, 10, 11, 24, 3], [0, 2, 183, 31, 16, 0], [0, 6, 34, 178, 24, 0], [0, 40, 21, 38, 68, 12], [0, 11, 0, 1, 4, 70]]
+Overall Accuracy: 0.7087967644084934
+Kappa: 0.625715010321904
+[16/53] Running notebook cell 31: classified_images = {}
+Classified image generated for 2000
+Classified image generated for 2005
+Classified image generated for 2010
+Classified image generated for 2015
+Classified image generated for 2020
+Classified image generated for 2025
+[17/53] Running notebook cell 33: lulc_vis = {"min": 1, "max": 5, "palette": ["red", "green", "yellow", "brown", "blue"]}
+[18/53] Running notebook cell 35: builtup_images = {}
+Built-up masks created for all years.
+[19/53] Running notebook cell 37: def calculate_builtup_area(image, year, aoi):
+[20/53] Running notebook cell 39: plt.figure(figsize=(9, 5))
+[21/53] Running notebook cell 41: area_df["change_sqkm"] = area_df["builtup_area_sqkm"].diff()
+[22/53] Running notebook cell 43: builtup_2000 = builtup_images[2000]
+[23/53] Running notebook cell 45: growth_intervals = {}
+Growth map created for 2000 to 2005
+Growth map created for 2005 to 2010
+Growth map created for 2010 to 2015
+Growth map created for 2015 to 2020
+Growth map created for 2020 to 2025
+[24/53] Running notebook cell 47: Map = geemap.Map(center=[10.52, 7.44], zoom=10)
+[25/53] Running notebook cell 49: grid = geemap.fishnet(aoi, rows=40, cols=40)
+[26/53] Running notebook cell 51: def add_growth_area(feature):
+Growth grid prepared: 966
+[27/53] Running notebook cell 53: def classify_hotspot(feature):
+Hotspot grid classified.
+[28/53] Running notebook cell 55: hotspot_vis = {"min": 1, "max": 5, "palette": ["f7f7f7", "fee5d9", "fcae91", "fb6a4a", "cb181d"]}
+[29/53] Running notebook cell 57: lulc_2000 = classified_images[2000]
+[30/53] Running notebook cell 59: class_names = {1: "Built-up", 2: "Vegetation", 3: "Cropland", 4: "Bare land", 5: "Water"}
+[31/53] Running notebook cell 61: plt.figure(figsize=(9, 5))
+[32/53] Skipping notebook cell 63: task = ee.batch.Export.table.toDrive(
+[33/53] Skipping notebook cell 65: for year in years:
+[34/53] Skipping notebook cell 67: task = ee.batch.Export.image.toDrive(
+[35/53] Skipping notebook cell 69: task = ee.batch.Export.image.toDrive(
+[36/53] Skipping notebook cell 71: task = ee.batch.Export.image.toDrive(
+[37/53] Running notebook cell 73: area_df.to_csv("kaduna_builtup_area_statistics.csv", index=False)
+CSV files saved in Colab runtime.
+[38/53] Skipping notebook cell 75: from google.colab import files
+[39/53] Running notebook cell 79: !pip install pillow requests -q
+Figures will be saved here: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures
+[40/53] Running notebook cell 81: def download_ee_thumbnail(image, vis_params, region, filename, dimensions=1800):
+AOI region prepared.
+Panel years: [2000, 2010, 2020, 2025]
+Growth benchmark years: 2000 2010 2020 2025
+[41/53] Running notebook cell 83: study_area_outline = ee.Image().byte().paint(
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_1_study_area_kaduna_metro.png
+[42/53] Running notebook cell 85: rgb_vis = {
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\satellite_rgb_2000.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\satellite_rgb_2010.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\satellite_rgb_2020.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\satellite_rgb_2025.png
+Saved panel: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_2_multiyear_satellite_panel.png
+[43/53] Running notebook cell 87: lulc_palette = [
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\lulc_classification_2000.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\lulc_classification_2010.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\lulc_classification_2020.png
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\lulc_classification_2025.png
+Saved panel: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_3_multiyear_lulc_panel.png
+Saved legend: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\lulc_legend.png
+[44/53] Running notebook cell 89: builtup_baseline = builtup_images[baseline_year]
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_4_builtup_expansion_change_map.png
+Saved legend: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\builtup_expansion_legend.png
+[45/53] Running notebook cell 91: hotspot_vis = {
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_5_urban_growth_hotspot_map.png
+Saved legend: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_legend.png
+[46/53] Running notebook cell 93: conversion_map_vis = {
+Using cached: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_6_land_conversion_to_builtup_map.png
+[47/53] Running notebook cell 95: fig, ax = plt.subplots(figsize=(9, 5))
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_7_builtup_area_trend_chart.png
+[48/53] Running notebook cell 97: conversion_plot_df = conversion_df.copy()
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_8_land_conversion_bar_chart.png
+[49/53] Running notebook cell 99: top_hotspots = hotspot_grid.sort('growth_sqkm', False).limit(4)
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_1_satellite_2000.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_1_satellite_2025.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_2_satellite_2000.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_2_satellite_2025.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_3_satellite_2000.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_3_satellite_2025.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_4_satellite_2000.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\hotspot_4_satellite_2025.png
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_9_before_after_hotspot_panels.png
+[50/53] Running notebook cell 101: interval_growth_images = {
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\growth_interval_2000_2010.png
+Thumbnail attempt failed for growth_interval_2010_2020.png at dimensions=1800: Failed to download growth_interval_2010_2020.png. Status code: 400
+Retrying growth_interval_2010_2020.png at dimensions=1500
+Thumbnail attempt failed for growth_interval_2010_2020.png at dimensions=1500: Failed to download growth_interval_2010_2020.png. Status code: 400
+Retrying growth_interval_2010_2020.png at dimensions=1200
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\growth_interval_2010_2020.png
+Thumbnail attempt failed for growth_interval_2020_2025.png at dimensions=1800: Failed to download growth_interval_2020_2025.png. Status code: 400
+Retrying growth_interval_2020_2025.png at dimensions=1500
+Thumbnail attempt failed for growth_interval_2020_2025.png at dimensions=1500: Failed to download growth_interval_2020_2025.png. Status code: 400
+Retrying growth_interval_2020_2025.png at dimensions=1200
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\growth_interval_2020_2025.png
+Saved panel: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_10_growth_interval_panel.png
+[51/53] Running notebook cell 103: comparison_year = final_year
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\comparison_satellite_2025.png
+Thumbnail attempt failed for comparison_lulc_2025.png at dimensions=1800: Failed to download comparison_lulc_2025.png. Status code: 400
+Retrying comparison_lulc_2025.png at dimensions=1500
+Thumbnail attempt failed for comparison_lulc_2025.png at dimensions=1500: Failed to download comparison_lulc_2025.png. Status code: 400
+Retrying comparison_lulc_2025.png at dimensions=1200
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\comparison_lulc_2025.png
+Saved panel: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_11_satellite_vs_classification.png
+[52/53] Running notebook cell 105: summary_table = area_df.copy()
+Saved: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures\figure_12_builtup_statistics_table.png
+[53/53] Skipping notebook cell 107: area_df.to_csv(OUTPUT_DIR / 'builtup_area_statistics_for_figures.csv', index=False)
+Finished. Outputs are in: C:\Users\USER\Documents\New project 5\kaduna_geoai_figures

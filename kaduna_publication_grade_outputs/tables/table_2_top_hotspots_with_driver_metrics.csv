@@ -1,0 +1,13 @@
+rank,lga,latitude,longitude,growth_sqkm_2000_2025,hotspot_class,distance_to_major_road_km,distance_to_2000_builtup_core_km,distance_to_river_km,planning_interpretation
+1,Chikun,10.42227,7.39427,2.2049637254901953,very high,0.172,0.0,0.203,Peri-urban expansion zone
+2,Igabi,10.54824,7.39427,2.096609588235291,very high,0.017,0.361,0.208,Peri-urban expansion zone
+3,Chikun,10.44746,7.49027,1.9423697686274506,very high,0.112,0.361,0.47,Peri-urban expansion zone
+4,Igabi,10.52305,7.49027,1.6410378862745092,very high,0.659,0.539,1.135,Peri-urban expansion zone
+5,Chikun,10.42227,7.52227,1.6249030509803917,very high,0.928,0.447,0.941,Peri-urban expansion zone
+6,Chikun,10.47266,7.45827,1.4999992823529429,very high,0.187,0.0,0.328,Drainage-sensitive edge expansion near existing urban core
+7,Kaduna South,10.42227,7.42627,1.4826705686274535,very high,0.078,0.3,0.308,Emerging peripheral growth cell
+8,Kaduna North,10.52305,7.45827,1.3338694431372555,very high,0.112,0.141,0.234,Drainage-sensitive edge expansion near existing urban core
+9,Kaduna North,10.49785,7.45827,1.2986170784313706,very high,0.834,0.51,0.037,Drainage-sensitive edge expansion near existing urban core
+10,Chikun,10.47266,7.49027,1.2488469019607844,very high,0.088,0.5,0.418,Peri-urban expansion zone
+11,Igabi,10.54824,7.49027,1.2270473019607822,very high,0.392,0.224,0.373,Peri-urban expansion zone
+12,Igabi,10.49785,7.39427,1.222923188235295,very high,0.253,0.0,1.137,Peri-urban expansion zone
